@@ -1,25 +1,25 @@
 package main
 
 import (
-	"database/sql"
-	"log"
+	weeorm "database-sql"
+	"database-sql/log"
+	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	db, _ := sql.Open("sqlite3", "wee.db")
-	defer func() { _ = db.Close() }()
-	_, _ = db.Exec("DROP TABLE IF EXIST User;")
-	_, _ = db.Exec("CREATE TABLE User(Name text);")
-	result, err := db.Exec("INSERT INTO User('Name') values (?), (?)", "Sungn", "Wumx")
-	if err == nil {
-		affected, _ := result.RowsAffected()
-		log.Println(affected)
-	}
-	row := db.QueryRow("SELECT Name FROM User LIMIT 1")
+	engine, _ := weeorm.NewEngine("sqlite3", "wee.db")
+	defer engine.Close()
+	s := engine.NewSession()
+	_, _ = s.Raw("DROP TABLE IF EXIST User;").Exec()
+	_, _ = s.Raw("CREATE TABLE User(Name text);").Exec()
+	_, _ = s.Raw("CREATE TABLE User(Name text);").Exec()
+	result, _ := s.Raw("INSERT INTO User(`Name`) values (?), (?)", "Sungn", "Wumx").Exec()
+	count, _ := result.RowsAffected()
+	fmt.Printf("Exec success, %d affected\n", count)
+	row := s.Raw("SELECT Name FROM User LIMIT 1;").QueryRow()
 	var name string
-	if err := row.Scan(&name); err == nil {
-		log.Println(name)
-	}
+	row.Scan(&name)
+	log.Info(name)
 }
