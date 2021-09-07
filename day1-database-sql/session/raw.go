@@ -32,6 +32,7 @@ func (s *Session) Raw(sql string, value ...interface{}) *Session {
 	return s
 }
 
+// Exec raw sql with sqlVars
 func (s *Session) Exec() (result sql.Result, err error) {
 	defer s.Clear()
 	log.Info(s.sql.String(), s.sqlVars)
@@ -41,12 +42,14 @@ func (s *Session) Exec() (result sql.Result, err error) {
 	return
 }
 
+// QueryRow gets a record from db
 func (s *Session) QueryRow() *sql.Row {
 	defer s.Clear()
 	log.Info(s.sql.String(), s.sqlVars)
 	return s.DB().QueryRow(s.sql.String(), s.sqlVars...)
 }
 
+// QueryRows gets a list of records from db
 func (s *Session) QueryRows() (rows *sql.Rows, err error) {
 	defer s.Clear()
 	log.Info(s.sql.String(), s.sqlVars)
