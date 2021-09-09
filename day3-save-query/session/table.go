@@ -34,7 +34,7 @@ func (s *Session) CreateTable() error {
 }
 
 func (s *Session) DropTable() error {
-	_, err := s.Raw(fmt.Sprintf("DROP TABLE IF EXIST %s;", s.refTable.Name)).Exec()
+	_, err := s.Raw(fmt.Sprintf("DROP TABLE IF EXISTS %s", s.refTable.Name)).Exec()
 	return err
 }
 

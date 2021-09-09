@@ -31,8 +31,8 @@ func genBindVars(nums int) string {
 func _insert(values ...interface{}) (string, []interface{}) {
 	// INSERT INTO $tableName ($fields)
 	tableName := values[0]
-	fields := strings.Join(values[1].([]string), ", ")
-	return fmt.Sprintf("INSERT INTO %s, (%v)", tableName, fields), []interface{}{}
+	fields := strings.Join(values[1].([]string), ",")
+	return fmt.Sprintf("INSERT INTO %s (%v)", tableName, fields), []interface{}{}
 }
 
 func _values(values ...interface{}) (string, []interface{}) {
@@ -46,7 +46,7 @@ func _values(values ...interface{}) (string, []interface{}) {
 		if bindStr == "" {
 			bindStr = genBindVars(len(v))
 		}
-		sql.WriteString(fmt.Sprintf("%v", bindStr))
+		sql.WriteString(fmt.Sprintf("(%v)", bindStr))
 		if i+1 != len(values) {
 			sql.WriteString(", ")
 		}
