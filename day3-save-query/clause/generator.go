@@ -68,7 +68,7 @@ func _orderby(values ...interface{}) (string, []interface{}) {
 func _select(values ...interface{}) (string, []interface{}) {
 	// SELECT $fields FROM $tableName
 	tableName := values[0]
-	fields := strings.Join(values[1].([]string), ", ")
+	fields := strings.Join(values[1].([]string), ",")
 	return fmt.Sprintf("SELECT %v FROM %s", fields, tableName), []interface{}{}
 }
 
